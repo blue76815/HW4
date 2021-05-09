@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>//引進 memset
+#include <assert.h>
+
 //http://c.biancheng.net/cpp/html/258.html
 // getc() 【返回值】讀到文件尾而無數據時便返回EOF
 
-#define CH_WIDTH 30
+#define CH_WIDTH 80
 int main(int argc, char **argv)
 {
     // if(argc!=4){
@@ -12,15 +14,42 @@ int main(int argc, char **argv)
     // }    
     FILE* input= fopen(argv[1],"r");//開啟第一個輸入變數 source_file 
     FILE* output = fopen(argv[2],"w+");//開啟第二個輸入變數 dest_file_1
+    //size_t  buffer_size;                //第三個參數則是設定buffer_size 
+    //sscanf(argv[3], "%ld", &buffer_size);//(第三個參數 可設定 0、-1、4KB、16KB、64KB、1MB、8MB)
+
     char wordBuf[80]={0x00};
     int bufLen=0;  // bufLen為還沒讀到空白鍵 先暫存到wordBuf[bufLen]內的 未完整英文單字
     int linePos=0; // linePos為字的位置
-//	setvbuf(input);  //新增這行
-//	setvbuf(output); //新增這行 
+    char *setv_inputBuf,*setv_outputBuf;
 
+    // int setv_mode;//
+    // sscanf(argv[4], "%d", &setv_mode); //(第三個參數 可設定setvbuf()為 1：_IONBF  2:_IOLBF  3:_IOFBF
+    // printf("setvbuf() setv_mode=");
+    // switch (setv_mode)
+    // {
+    // case 1:
+    //     printf("1：_IONBF\r\n");
+    //     break;
+    // case 2:
+    //     printf("2：_IOLBF\r\n");
+    //     break;
+    // case 3:
+    //     printf("3：_IOFBF\r\n");
+    //     break;            
+    // default:
+    //     printf("參數輸入錯誤：%d\r\n",setv_mode);
+    //     break;
+    // }
+
+    // setv_inputBuf=(char*)malloc(buffer_size);
+    // setv_outputBuf=(char*)malloc(buffer_size);
+    // setvbuf(input,setv_inputBuf,_IOFBF,buffer_size);//新增這行
+    // setvbuf(output,setv_outputBuf,_IOFBF,buffer_size);//新增這行 
     if(input==NULL){
         printf("file %s not exist\r\n",argv[1]);
         printf( "open failure\r\n" );
+        // free(setv_inputBuf);
+        // free(setv_outputBuf);
         return 0;
     }else{
         printf("開檔成功\r\n");
@@ -70,6 +99,8 @@ int main(int argc, char **argv)
 		//因此把『.』算成單字的一部分
 		wordBuf[bufLen++] = inputChar;
 	}
+    // free(setv_inputBuf);
+    // free(setv_outputBuf);    
     fclose(input);//若前面fopen（input）失敗 則後面fclose(input);時 會出現 程式記憶體區段錯誤 (核心已傾印)
     fclose(output);    
 	return 0;
