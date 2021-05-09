@@ -1,0 +1,1 @@
+naming style of MSR_%box#%_PMON_%scope_function%, where %box#% designates the type of box and zerobased index if there are more the one box of the same type, %scope_function% follows the examples below:

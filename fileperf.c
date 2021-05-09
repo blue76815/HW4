@@ -3,6 +3,11 @@
 #include <string.h>//引進 memset
 #include <assert.h>
 
+#include <sys/file.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <libgen.h>
+#include <time.h>
 //http://c.biancheng.net/cpp/html/258.html
 // getc() 【返回值】讀到文件尾而無數據時便返回EOF
 
@@ -14,11 +19,11 @@ int main(int argc, char **argv)
         return 0;
     }    
     FILE* input= fopen(argv[1],"r");//開啟第一個輸入變數 source_file 
-    FILE* output = fopen(argv[2],"w+");//開啟第二個輸入變數 dest_file_1
+    FILE* output = fopen(argv[2],"w");//開啟第二個輸入變數 dest_file_1
     size_t  buffer_size;                //第三個參數則是設定buffer_size 
     sscanf(argv[3], "%ld", &buffer_size);//(第三個參數 可設定 0、-1、4KB、16KB、64KB、1MB、8MB)
 
-    char wordBuf[80]={0x00};
+    char wordBuf[280]={0x00};
     int bufLen=0;  // bufLen為還沒讀到空白鍵 先暫存到wordBuf[bufLen]內的 未完整英文單字
     int linePos=0; // linePos為字的位置
     char *setv_inputBuf,*setv_outputBuf;
@@ -31,7 +36,7 @@ int main(int argc, char **argv)
         printf("開檔成功\r\n");
     }
     int setv_mode;//
-    sscanf(argv[4], "%d", &setv_mode); //(第三個參數 可設定setvbuf()為 1：_IONBF  2:_IOLBF  3:_IOFBF
+    sscanf(argv[4], "%d", &setv_mode); //(第四個參數 可設定setvbuf()為 1：_IONBF  2:_IOLBF  3:_IOFBF
     printf("setvbuf() setv_mode=");
     switch (setv_mode)
     {
@@ -49,10 +54,10 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    setv_inputBuf=(char*)malloc(buffer_size);
-    setv_outputBuf=(char*)malloc(buffer_size);
-    setvbuf(input,setv_inputBuf,_IOFBF,buffer_size);//新增這行
-    setvbuf(output,setv_outputBuf,_IOFBF,buffer_size);//新增這行 
+    setv_inputBuf=(char*)malloc(sizeof(char)*buffer_size);
+    setv_outputBuf=(char*)malloc(sizeof(char)*buffer_size);
+    assert(setvbuf(input,setv_inputBuf,_IOLBF,buffer_size)==0);//新增這行
+    assert(setvbuf(output,setv_outputBuf,_IOLBF,buffer_size)==0);//新增這行 
 
 	while (1) {
 		int inputInt = getc(input); // int getc(FILE *stream)// 指定的流stream獲取下一個字符（一個無符號字符），並把位置標識符往前移動。
@@ -91,14 +96,36 @@ int main(int argc, char **argv)
             }else{
                 //linePos++;//linePos++是為了把"空格"也要計入 游標空間
             }
-            wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
-            fprintf(output, wordBuf, bufLen);
-            linePos=linePos + bufLen; //更新linePos寫入檔案的游標位置                   
-            memset(wordBuf,0x00,sizeof(wordBuf));
+            wordBuf[bufLen++] = inputChar; //在字寬內，則也要把' '也要存入wordBuf[]內
+            linePos=linePos + bufLen; //更新linePos寫入檔案的游標位置  
+            fprintf(output, wordBuf, bufLen);                            
+            memset(wordBuf,'\0',280);
             bufLen=0;
             continue;
 
 		}//end if (inputChar == ' ')
+
+		// //『空白』為單字的結束
+		// if (inputChar == ' '){   
+        //     /*讀到空格*/  
+        //     bufLen++;    
+        //     if (linePos + bufLen > CH_WIDTH) {
+        //         /* (目前游標+將來要寫入的字串) 該行已經容納不下字寬 得先提前換行*/  
+        //         fprintf(output,"\n%s",wordBuf);
+        //         linePos = 0;//換行時得歸零寫入檔案時的游標
+        //     }else{
+        //         if(linePos==0)
+        //             fprintf(output,"%s",wordBuf);
+        //         else
+        //             fprintf(output," %s",wordBuf);
+        //     }
+        //     linePos=linePos + bufLen; //更新linePos寫入檔案的游標位置                             
+        //     memset(wordBuf,'\0',280);
+        //     bufLen=0;
+        //     continue;
+
+		// }//end if (inputChar == ' ')
+        
 		//因為只有空白可以換行
 		//因此把『.』算成單字的一部分
 		wordBuf[bufLen++] = inputChar;
