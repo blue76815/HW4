@@ -27,13 +27,13 @@ int main(int argc, char **argv)
     }
 	while (1) {
 		int inputInt = getc(input); // int getc(FILE *stream)// 指定的流stream獲取下一個字符（一個無符號字符），並把位置標識符往前移動。
-		printf("inputInt=%c\r\n",inputInt);
         /*讀到 EOF（-1）代表已讀完檔案裡全部資料*/
         if (inputInt == EOF){ 
             printf("EOF\r\n");
             ///wordBuf[bufLen++] = inputChar; //EOF為（-1）值 為不可見字 不能寫入到檔案中
-            if (linePos + bufLen > CH_WIDTH){              
-               fprintf(output,"\n"); //該行已經容納不下字寬 得先提前換行
+            if (linePos + bufLen > CH_WIDTH){ 
+             /* 目前游標+將來要寫入的字串 該行已經容納不下字寬 得先提前換行*/
+               fprintf(output,"\n"); 
             }
             fprintf(output, wordBuf, bufLen);
             memset(wordBuf,0x00,sizeof(wordBuf));
@@ -43,22 +43,18 @@ int main(int argc, char **argv)
 		//將輸入轉成char來處理
 		unsigned char inputChar =(unsigned char)inputInt;       
         /*讀到最後一個字'\n' （ascii值10）的時候*/
-		if (inputChar == '\n') 
-        {
+		if (inputChar == '\n') {
+            /*結束 讀到最後一個字（ascii值10）*/
             wordBuf[bufLen++] = inputChar;
-            printf("結束 讀到最後一個字（ascii值10）\r\n");
             continue;
         }
 		//『空白』為單字的結束
-		if (inputChar == ' ') 
-        {
-            printf("讀到空格\n");
-            printf("linePos:%d bufLen:%d \r\n",linePos,bufLen);           
+		if (inputChar == ' '){   
+            /*讀到空格*/      
             if (linePos + bufLen > CH_WIDTH) {
-            /*該行已經容納不下，需要換行了*/    
-                printf("該行已經容納不下字寬 得先提前換行\r\n");
+                /* (目前游標+將來要寫入的字串) 該行已經容納不下字寬 得先提前換行*/  
                 fprintf(output,"\n"); // fprintf（）輸出時 已經自帶檔案寫入到 output檔案路徑指標內
-                linePos = 0;
+                linePos = 0;//換行時得歸零寫入檔案時的游標
             }else{
                 linePos++;//linePos++是為了把"空格"也要計入 游標空間
             }
