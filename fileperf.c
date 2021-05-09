@@ -77,13 +77,13 @@ int main(int argc, char **argv)
 		//將輸入轉成char來處理
 		unsigned char inputChar =(unsigned char)inputInt;       
         /*讀到最後一個字'\n' （ascii值10）的時候*/
-		if (inputChar == '\n') {
+	if (inputChar == '\n') {
             /*結束 讀到最後一個字（ascii值10）*/
-            wordBuf[bufLen++] = inputChar;
+            wordBuf[bufLen] = inputChar;
             if(linePos + bufLen > CH_WIDTH)
             {
-              //fprintf(output,"\n%s", wordBuf); 
-              fprintf(output,"%s", wordBuf); 
+              fprintf(output,"\n%s", wordBuf); 
+              //fprintf(output,"%s", wordBuf); 
             }else{
               fprintf(output,"%s", wordBuf); 
             }
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
         //     continue;
         // }        
 		//『空白』為單字的結束
-		if (inputChar == ' '){ 
+	if (inputChar == ' '){ 
 
             /*讀到空格*/      
             if (linePos + bufLen+1 > CH_WIDTH) {
