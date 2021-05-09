@@ -41,9 +41,7 @@ int main(int argc, char **argv)
             break;
         } 
 		//將輸入轉成char來處理
-		unsigned char inputChar =(unsigned char)inputInt;
-		//因為重新排版，因此忽略換行
-        
+		unsigned char inputChar =(unsigned char)inputInt;       
         /*讀到最後一個字'\n' （ascii值10）的時候*/
 		if (inputChar == '\n') 
         {
@@ -55,19 +53,18 @@ int main(int argc, char **argv)
 		if (inputChar == ' ') 
         {
             printf("讀到空格\n");
-            printf("linePos:%d bufLen:%d \r\n",linePos,bufLen);
-            /*該行已經容納不下，需要換行了*/
+            printf("linePos:%d bufLen:%d \r\n",linePos,bufLen);           
             if (linePos + bufLen > CH_WIDTH) {
+            /*該行已經容納不下，需要換行了*/    
                 printf("該行已經容納不下字寬 得先提前換行\r\n");
                 fprintf(output,"\n"); // fprintf（）輸出時 已經自帶檔案寫入到 output檔案路徑指標內
                 linePos = 0;
-                wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
             }else{
-                linePos++;
-                wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
+                linePos++;//linePos++是為了把"空格"也要計入 游標空間
             }
+            wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
             fprintf(output, wordBuf, bufLen);
-            linePos=linePos + bufLen;                       
+            linePos=linePos + bufLen; //更新linePos寫入檔案的游標位置                   
             memset(wordBuf,0x00,sizeof(wordBuf));
             bufLen=0;
             continue;
