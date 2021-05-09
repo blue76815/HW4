@@ -75,6 +75,10 @@ int main(int argc, char **argv)
 		if (inputChar == '\n') {
             /*結束 讀到最後一個字（ascii值10）*/
             wordBuf[bufLen++] = inputChar;
+            fprintf(output, wordBuf, bufLen);
+            memset(wordBuf,0x00,sizeof(wordBuf));
+            bufLen=0;
+            linePos = 0;//換行時得歸零寫入檔案時的游標
             continue;
         }
 		//『空白』為單字的結束
@@ -85,7 +89,7 @@ int main(int argc, char **argv)
                 fprintf(output,"\n"); // fprintf（）輸出時 已經自帶檔案寫入到 output檔案路徑指標內
                 linePos = 0;//換行時得歸零寫入檔案時的游標
             }else{
-                linePos++;//linePos++是為了把"空格"也要計入 游標空間
+                //linePos++;//linePos++是為了把"空格"也要計入 游標空間
             }
             wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
             fprintf(output, wordBuf, bufLen);
