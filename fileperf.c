@@ -3,6 +3,8 @@
 #include <string.h>//引進 memset
 //http://c.biancheng.net/cpp/html/258.html
 // getc() 【返回值】讀到文件尾而無數據時便返回EOF
+
+#define CH_WIDTH 30
 int main(int argc, char **argv)
 {
     // if(argc!=4){
@@ -30,6 +32,9 @@ int main(int argc, char **argv)
         if (inputInt == EOF){ 
             printf("EOF\r\n");
             ///wordBuf[bufLen++] = inputChar; //EOF為（-1）值 為不可見字 不能寫入到檔案中
+            if (linePos + bufLen > CH_WIDTH){              
+               fprintf(output,"\n"); //該行已經容納不下字寬 得先提前換行
+            }
             fprintf(output, wordBuf, bufLen);
             memset(wordBuf,0x00,sizeof(wordBuf));
             bufLen=0;
@@ -50,23 +55,21 @@ int main(int argc, char **argv)
 		if (inputChar == ' ') 
         {
             printf("讀到空格\n");
-			bufLen++;
             printf("linePos:%d bufLen:%d \r\n",linePos,bufLen);
             /*該行已經容納不下，需要換行了*/
-            if (linePos + bufLen > 10) {
+            if (linePos + bufLen > CH_WIDTH) {
                 printf("該行已經容納不下字寬 得先提前換行\r\n");
                 fprintf(output,"\n"); // fprintf（）輸出時 已經自帶檔案寫入到 output檔案路徑指標內
-             //去掉開頭的空白
-                bufLen--;//扣掉前面多讀到的' '字元
                 linePos = 0;
+                wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
             }else{
                 linePos++;
                 wordBuf[bufLen++] = inputChar;//在字寬內，則也要把' '也要存入wordBuf[]內
             }
             fprintf(output, wordBuf, bufLen);
-            bufLen=0;
+            linePos=linePos + bufLen;                       
             memset(wordBuf,0x00,sizeof(wordBuf));
-            linePos=linePos + bufLen;
+            bufLen=0;
             continue;
 
 		}//end if (inputChar == ' ')
