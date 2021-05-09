@@ -1,0 +1,3 @@
+https://software.intel.com/enus/forums/software-tuning-performance-optimization-https://software.intel.com/enus/forums/software-tuning-performance-optimization-platform-monitoring.
+platform-monitoring. Table 19-15. Performance Events In the Processor Core of 
+3rd Generation Intel® 

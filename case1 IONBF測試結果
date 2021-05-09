@@ -1,0 +1,57 @@
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt 0 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.170s
+user	0m4.889s
+sys	0m8.264s
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt -1 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.125s
+user	0m4.785s
+sys	0m8.309s
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt 4096 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.118s
+user	0m4.741s
+sys	0m8.377s
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt 16384 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.207s
+user	0m4.793s
+sys	0m8.381s
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt 65536 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.123s
+user	0m4.669s
+sys	0m8.453s
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt 1048576 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.241s
+user	0m4.880s
+sys	0m8.331s
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ./fileperf input.txt output.txt 8388608 1
+開檔成功
+setvbuf() setv_mode=1：_IONBF
+EOF
+
+real	0m13.308s
+user	0m4.788s
+sys	0m8.503s
+

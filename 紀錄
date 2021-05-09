@@ -1,0 +1,157 @@
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ strace -c ./fileperf input.txt output.txt 4096 2
+開檔成功
+setvbuf() setv_mode=2：_IOLBF
+EOF
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 98.76    1.335101           4    324416           write
+  0.80    0.010853           3      3347           read
+  0.35    0.004751         950         5           openat
+  0.05    0.000643           2       242           rt_sigreturn
+  0.04    0.000508         101         5           close
+  0.00    0.000013           4         3           fstat
+  0.00    0.000006           6         1           writev
+  0.00    0.000004           2         2           rt_sigaction
+  0.00    0.000002           1         2           setitimer
+  0.00    0.000000           0         7           mmap
+  0.00    0.000000           0         4           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         3           brk
+  0.00    0.000000           0         6           pread64
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         2         1 arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    1.351881                328048         2 total
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ strace -c ./fileperf input.txt output.txt 0 2
+開檔成功
+setvbuf() setv_mode=2：_IOLBF
+EOF
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 64.81   48.254482           3  13699328           read
+ 35.13   26.153502           5   4952464           write
+  0.06    0.041576           3     11410           rt_sigreturn
+  0.01    0.003768         753         5           openat
+  0.00    0.000079          15         5           close
+  0.00    0.000010           3         3           fstat
+  0.00    0.000007           7         1           writev
+  0.00    0.000005           2         2           setitimer
+  0.00    0.000003           1         2           rt_sigaction
+  0.00    0.000000           0         7           mmap
+  0.00    0.000000           0         4           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         3           brk
+  0.00    0.000000           0         6           pread64
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         2         1 arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00   74.453432              18663245         2 total
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ ltrace -c ./fileperf input.txt output.txt 4096 2
+開檔成功
+setvbuf() setv_mode=2：_IOLBF
+EOF
+% time     seconds  usecs/call     calls      function
+------ ----------- ----------- --------- --------------------
+ 19.30    0.000742         742         1 __monstartup
+ 10.72    0.000412         412         1 fopen
+  9.15    0.000352         352         1 puts
+  6.40    0.000246         246         1 fputs
+  6.16    0.000237         237         1 __isoc99_sscanf
+  5.93    0.000228         228         1 getc
+  5.72    0.000220         220         1 __cyg_profile_func_enter
+  5.44    0.000209         209         1 fputc
+  4.34    0.000167         167         1 printf
+  4.32    0.000166         166         1 malloc
+  4.19    0.000161         161         1 __cxa_atexit
+  3.82    0.000147         147         1 setvbuf
+  3.80    0.000146         146         1 fprintf
+  3.77    0.000145         145         1 memset
+  3.56    0.000137         137         1 free
+  1.90    0.000073          73         1 fclose
+  1.48    0.000057          57         1 __cyg_profile_func_exit
+------ ----------- ----------- --------- --------------------
+100.00    0.003845                    17 total
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ ltrace -c ./fileperf input.txt output.txt 0 2
+開檔成功
+setvbuf() setv_mode=2：_IOLBF
+EOF
+% time     seconds  usecs/call     calls      function
+------ ----------- ----------- --------- --------------------
+ 31.90    0.000519         519         1 __monstartup
+ 13.15    0.000214         214         1 puts
+  7.87    0.000128         128         1 fprintf
+  6.39    0.000104         104         1 __isoc99_sscanf
+  4.61    0.000075          75         1 fputs
+  4.43    0.000072          72         1 free
+  4.00    0.000065          65         1 fputc
+  3.81    0.000062          62         1 fclose
+  3.32    0.000054          54         1 printf
+  3.32    0.000054          54         1 fopen
+  3.13    0.000051          51         1 malloc
+  2.83    0.000046          46         1 getc
+  2.77    0.000045          45         1 __cyg_profile_func_exit
+  2.21    0.000036          36         1 __cxa_atexit
+  2.15    0.000035          35         1 __cyg_profile_func_enter
+  2.09    0.000034          34         1 memset
+  2.03    0.000033          33         1 setvbuf
+------ ----------- ----------- --------- --------------------
+100.00    0.001627                    17 total
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ 
+
+
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ strace -c ./fileperf input.txt output.txt 0 2
+開檔成功
+setvbuf() setv_mode=2：_IOLBF
+EOF
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 64.57   51.265811           3  13699328           read
+ 35.36   28.073051           5   4952464           write
+  0.06    0.048392           3     12128         2 rt_sigreturn
+  0.00    0.003364         672         5           openat
+  0.00    0.000092          18         5           close
+  0.00    0.000012           4         3           fstat
+  0.00    0.000009           9         1           writev
+  0.00    0.000004           2         2           rt_sigaction
+  0.00    0.000004           2         2           setitimer
+  0.00    0.000000           0         7           mmap
+  0.00    0.000000           0         4           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         3           brk
+  0.00    0.000000           0         6           pread64
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         2         1 arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00   79.390739              18663963         4 total
+blue76185@blue76815-tuf-gaming-fx504ge-fx80ge:~/羅習五/2021實體課hw/hw4/type16(總結)$ time ltrace -c ./fileperf input.txt output.txt 0 2開檔成功
+setvbuf() setv_mode=2：_IOLBF
+EOF
+% time     seconds  usecs/call     calls      function
+------ ----------- ----------- --------- --------------------
+ 15.45    0.000339         339         1 __monstartup
+ 12.03    0.000264         264         1 puts
+  8.25    0.000181         181         1 fprintf
+  6.65    0.000146         146         1 fputs
+  6.52    0.000143         143         1 __isoc99_sscanf
+  6.29    0.000138         138         1 fputc
+  5.42    0.000119         119         1 printf
+  5.24    0.000115         115         1 getc
+  5.15    0.000113         113         1 fopen
+  4.56    0.000100         100         1 __cyg_profile_func_enter
+  4.10    0.000090          90         1 malloc
+  3.97    0.000087          87         1 setvbuf
+  3.92    0.000086          86         1 memset
+  3.65    0.000080          80         1 free
+  3.33    0.000073          73         1 __cxa_atexit
+  3.05    0.000067          67         1 fclose
+  2.42    0.000053          53         1 __cyg_profile_func_exit
+------ ----------- ----------- --------- --------------------
+100.00    0.002194                    17 total
+
+real	6m4.377s
+user	1m55.720s
+sys	5m37.464s
+
