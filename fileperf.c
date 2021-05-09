@@ -9,51 +9,51 @@
 #define CH_WIDTH 80
 int main(int argc, char **argv)
 {
-    // if(argc!=4){
-    //     printf("輸入參數不到3個\n");
-    // }    
+    if(argc!=5){
+        printf("輸入參數不到4個\n");
+        return 0;
+    }    
     FILE* input= fopen(argv[1],"r");//開啟第一個輸入變數 source_file 
     FILE* output = fopen(argv[2],"w+");//開啟第二個輸入變數 dest_file_1
-    //size_t  buffer_size;                //第三個參數則是設定buffer_size 
-    //sscanf(argv[3], "%ld", &buffer_size);//(第三個參數 可設定 0、-1、4KB、16KB、64KB、1MB、8MB)
+    size_t  buffer_size;                //第三個參數則是設定buffer_size 
+    sscanf(argv[3], "%ld", &buffer_size);//(第三個參數 可設定 0、-1、4KB、16KB、64KB、1MB、8MB)
 
     char wordBuf[80]={0x00};
     int bufLen=0;  // bufLen為還沒讀到空白鍵 先暫存到wordBuf[bufLen]內的 未完整英文單字
     int linePos=0; // linePos為字的位置
     char *setv_inputBuf,*setv_outputBuf;
-
-    // int setv_mode;//
-    // sscanf(argv[4], "%d", &setv_mode); //(第三個參數 可設定setvbuf()為 1：_IONBF  2:_IOLBF  3:_IOFBF
-    // printf("setvbuf() setv_mode=");
-    // switch (setv_mode)
-    // {
-    // case 1:
-    //     printf("1：_IONBF\r\n");
-    //     break;
-    // case 2:
-    //     printf("2：_IOLBF\r\n");
-    //     break;
-    // case 3:
-    //     printf("3：_IOFBF\r\n");
-    //     break;            
-    // default:
-    //     printf("參數輸入錯誤：%d\r\n",setv_mode);
-    //     break;
-    // }
-
-    // setv_inputBuf=(char*)malloc(buffer_size);
-    // setv_outputBuf=(char*)malloc(buffer_size);
-    // setvbuf(input,setv_inputBuf,_IOFBF,buffer_size);//新增這行
-    // setvbuf(output,setv_outputBuf,_IOFBF,buffer_size);//新增這行 
+    
     if(input==NULL){
         printf("file %s not exist\r\n",argv[1]);
         printf( "open failure\r\n" );
-        // free(setv_inputBuf);
-        // free(setv_outputBuf);
         return 0;
     }else{
         printf("開檔成功\r\n");
     }
+    int setv_mode;//
+    sscanf(argv[4], "%d", &setv_mode); //(第三個參數 可設定setvbuf()為 1：_IONBF  2:_IOLBF  3:_IOFBF
+    printf("setvbuf() setv_mode=");
+    switch (setv_mode)
+    {
+    case 1:
+        printf("1：_IONBF\r\n");
+        break;
+    case 2:
+        printf("2：_IOLBF\r\n");
+        break;
+    case 3:
+        printf("3：_IOFBF\r\n");
+        break;            
+    default:
+        printf("參數輸入錯誤：%d\r\n",setv_mode);
+        return 0;
+    }
+
+    setv_inputBuf=(char*)malloc(buffer_size);
+    setv_outputBuf=(char*)malloc(buffer_size);
+    setvbuf(input,setv_inputBuf,_IOFBF,buffer_size);//新增這行
+    setvbuf(output,setv_outputBuf,_IOFBF,buffer_size);//新增這行 
+
 	while (1) {
 		int inputInt = getc(input); // int getc(FILE *stream)// 指定的流stream獲取下一個字符（一個無符號字符），並把位置標識符往前移動。
         /*讀到 EOF（-1）代表已讀完檔案裡全部資料*/
@@ -103,8 +103,8 @@ int main(int argc, char **argv)
 		//因此把『.』算成單字的一部分
 		wordBuf[bufLen++] = inputChar;
 	}
-    // free(setv_inputBuf);
-    // free(setv_outputBuf);    
+    free(setv_inputBuf);
+    free(setv_outputBuf);    
     fclose(input);//若前面fopen（input）失敗 則後面fclose(input);時 會出現 程式記憶體區段錯誤 (核心已傾印)
     fclose(output);    
 	return 0;
