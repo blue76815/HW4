@@ -80,27 +80,63 @@ int main(int argc, char **argv)
 		if (inputChar == '\n') {
             /*結束 讀到最後一個字（ascii值10）*/
             wordBuf[bufLen++] = inputChar;
-            fprintf(output, wordBuf, bufLen);
+            if(linePos + bufLen > CH_WIDTH)
+            {
+              //fprintf(output,"\n%s", wordBuf); 
+              fprintf(output,"%s", wordBuf); 
+            }else{
+              fprintf(output,"%s", wordBuf); 
+            }
             memset(wordBuf,0x00,sizeof(wordBuf));
             bufLen=0;
             linePos = 0;//換行時得歸零寫入檔案時的游標
             continue;
         }
+
+        // /*讀到最後一個字'\n' （ascii值10）的時候*/
+		// if (inputChar == '\n') {
+        //     /*結束 讀到最後一個字（ascii值10）*/
+        //     fprintf(output, "%s\n", wordBuf);
+        //     memset(wordBuf,0x00,sizeof(wordBuf));
+        //     bufLen=0;
+        //     linePos = 0;//換行時得歸零寫入檔案時的游標
+        //     continue;
+        // }        
 		//『空白』為單字的結束
-		if (inputChar == ' '){   
+		if (inputChar == ' '){ 
+
             /*讀到空格*/      
-            if (linePos + bufLen > CH_WIDTH) {
+            if (linePos + bufLen+1 > CH_WIDTH) {
                 /* (目前游標+將來要寫入的字串) 該行已經容納不下字寬 得先提前換行*/  
                 fprintf(output,"\n"); // fprintf（）輸出時 已經自帶檔案寫入到 output檔案路徑指標內
                 linePos = 0;//換行時得歸零寫入檔案時的游標
+                fprintf(output,"%s ",wordBuf); 
+                linePos=linePos + bufLen+1; //更新linePos寫入檔案的游標位置+1個空格
             }else{
-                //linePos++;//linePos++是為了把"空格"也要計入 游標空間
+                fprintf(output,"%s ",wordBuf); 
+                linePos=linePos + bufLen+1; //更新linePos寫入檔案的游標位置+1個空格
             }
-            wordBuf[bufLen++] = inputChar; //在字寬內，則也要把' '也要存入wordBuf[]內
-            linePos=linePos + bufLen; //更新linePos寫入檔案的游標位置  
-            fprintf(output, wordBuf, bufLen);                            
-            memset(wordBuf,'\0',280);
+            memset(wordBuf,0x00,sizeof(wordBuf));
             bufLen=0;
+
+            // /*讀到空格*/      
+            // if (linePos + bufLen > CH_WIDTH) {
+            //     /* (目前游標+將來要寫入的字串) 該行已經容納不下字寬 得先提前換行*/  
+            //     fprintf(output,"\n"); // fprintf（）輸出時 已經自帶檔案寫入到 output檔案路徑指標內
+            //     linePos = 0;//換行時得歸零寫入檔案時的游標
+            // }
+            // fprintf(output,"%s ",wordBuf); 
+            // linePos=linePos + bufLen+1; //更新linePos寫入檔案的游標位置+1個空格
+            // memset(wordBuf,0x00,sizeof(wordBuf));
+            // bufLen=0;
+
+            //**fprintf獨立寫" " 執行時 會出現 segment fault**/
+            // fprintf(output,wordBuf,bufLen); 
+            // linePos=linePos + bufLen; //更新linePos寫入檔案的游標位置,bufLen不含空格
+            // memset(wordBuf,'\0',280);
+            // bufLen=0;
+            // fprintf(output," ");//ASCII的空白鍵值 
+            // linePos++; //寫入的linePos游標位置加入1個"空格"
             continue;
 
 		}//end if (inputChar == ' ')
